@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:EventyMaui.Helpers"
+             xmlns:vm="clr-namespace:EventyMaui.ViewModels"
+             x:Class="EventyMaui.Views.AddEventPage"
+             Title="Add New Event"
+             x:Name="ThisAddPage"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasBackButton="False"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource ColorBackground}">
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <HorizontalStackLayout>
+                <!-- Back Button -->
+                <ImageButton Style="{DynamicResource BackImageButtonStyle}"
+                             HorizontalOptions="Start"
+                             VerticalOptions="Center"
+                             Clicked="OnBackButtonClicked">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="{x:Static helpers:IconFont.ChevronLeft}"
+                                         FontFamily="IconFontTypes" />
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <!-- Title -->
+                <Label Text="Add Event"
+                       Margin="20,0,0,0"
+                       FontSize="26"
+                       Style="{StaticResource PageSubHeaderStyle}"
+                       HorizontalOptions="Center" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout Spacing="10" Padding="20">
+                <!-- Event Name -->
+                <StackLayout>
+                    <Label Text="Event Name"
+                           Style="{StaticResource UpcomingSubTitleStyle}"
+                           FontSize="16"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start"/>
+                    <Entry Text="{Binding NewEvent.Name, Mode=TwoWay}"
+                           Placeholder="Event Name"/>
+                </StackLayout>
+
+                <!-- Event Hero Image URL -->
+                <StackLayout>
+                    <Label Text="Event Hero Image URL"
+                           Style="{StaticResource UpcomingSubTitleStyle}"
+                           FontSize="16"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start"/>
+                    <Entry x:Name="EventHeroImageEntry" Text="{Binding NewEvent.HeroImage, Mode=TwoWay}"
+                           Placeholder="Event Hero Image URL"/>
+
+                    <Image Source="{Binding NewEvent.HeroImage}"
+                           HeightRequest="200"
+                           Aspect="AspectFill"
+                           VerticalOptions="FillAndExpand"
+                           HorizontalOptions="FillAndExpand"/>
+
+                    <StackLayout Orientation="Horizontal" Spacing="60" HorizontalOptions="Center" VerticalOptions="Start">
+                        <!-- Capture Image Option -->
+                        <Border Stroke="Transparent" Background="Transparent"
+                                HeightRequest="100" 
+                                WidthRequest="100">
+                            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CaptureImageCommand}" NumberOfTapsRequired="1"/>
+                                </StackLayout.GestureRecognizers>
+                                <ImageButton BackgroundColor="Transparent"
+                                             HorizontalOptions="Start"
+                                             VerticalOptions="Start"
+                                             Command="{Binding CaptureImageCommand}">
+                                    <ImageButton.Source>
+                                        <FontImageSource Glyph="{x:Static helpers:IconFont.Camera}"
+                                                         Color="{StaticResource ColorPrimaryDarkShade}"
+                                                         FontFamily="IconFontTypes" />
+                                    </ImageButton.Source>
+                                </ImageButton>
+                                <Label Text="Capture" HorizontalTextAlignment="Center" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding CaptureImageCommand}" NumberOfTapsRequired="1"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                        </Border>
+
+                        <!-- Select Image Option -->
+                        <Border Stroke="Transparent" Background="Transparent"
+                                HeightRequest="100" 
+                                WidthRequest="100"
+                                HorizontalOptions="Center">
+                            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectImageCommand}" NumberOfTapsRequired="1"/>
+                                </StackLayout.GestureRecognizers>
+                                <ImageButton BackgroundColor="Transparent"
+                                             HorizontalOptions="Start"
+                                             VerticalOptions="Start"
+                                             Command="{Binding SelectImageCommand}">
+                                    <ImageButton.Source>
+                                        <FontImageSource Glyph="{x:Static helpers:IconFont.CameraBurst}"
+                                                         Color="{StaticResource ColorPrimaryDarkShade}"
+                                                         FontFamily="IconFontTypes" />
+                                    </ImageButton.Source>
+                                </ImageButton>
+                                <Label Text="Select Image" HorizontalTextAlignment="Center" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SelectImageCommand}" NumberOfTapsRequired="1"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                        </Border>
+                    </StackLayout>
+                </StackLayout>
+
+                <!-- Event Category -->
+                <StackLayout>
+                    <Label Text="Event Category"
+                           Style="{StaticResource UpcomingSubTitleStyle}"
+                           FontSize="16"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start"/>
+                    <Entry Text="{Binding NewEvent.Category, Mode=TwoWay}"
+                           Placeholder="Event Category"/>
+                </StackLayout>
+
+                <!-- Event Description -->
+                <StackLayout>
+                    <Label Text="Event Description"
+                           Style="{StaticResource UpcomingSubTitleStyle}"
+                           FontSize="16"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start"/>
+                    <Editor Text="{Binding NewEvent.Description, Mode=TwoWay}"
+                            Placeholder="Event Description"
+                            AutoSize="TextChanges"/>
+                </StackLayout>
+
+                <!-- Event Date -->
+                <StackLayout>
+                    <Label Text="Event Date"
+                            Style="{StaticResource UpcomingSubTitleStyle}"
+                            FontSize="16"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"/>
+                    <DatePicker Date="{Binding NewEvent.Date, Mode=TwoWay}"/>
+                </StackLayout>
+
+                <!-- Event Location -->
+                <StackLayout>
+                    <Label Text="Event Location"
+                           Style="{StaticResource UpcomingSubTitleStyle}"
+                           FontSize="16"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start"/>
+                    <Entry x:Name="EventLocationEntry" Text="{Binding NewEvent.Location, Mode=TwoWay}"
+                           Placeholder="Event Location"/>
+                    <Label Text="Use Current Location"
+                           Style="{StaticResource PageSubHeaderSubTitleStyle}" 
+                           HorizontalOptions="End"
+                           VerticalOptions="Start"
+                           TextDecorations="Underline"
+                           Margin="0,0,0,0">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding UseCurrentLocationCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+
+                <!-- Event Gallery -->
+                <StackLayout>
+                    <Label Text="Event Gallery"
+                           Style="{StaticResource UpcomingSubTitleStyle}"
+                           FontSize="16"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start"
+                           Margin="0, 0, 0, 10"/>
+
+                    <!-- Display Current Gallery Images -->
+                    <StackLayout Orientation="Vertical"
+                                 BindableLayout.ItemsSource="{Binding NewEvent.Gallery}"
+                                 Spacing="10">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <VerticalStackLayout Spacing="5">
+                                    <Image Source="{Binding .}"
+                                           HeightRequest="200"
+                                           Aspect="AspectFill"
+                                           VerticalOptions="FillAndExpand"
+                                           HorizontalOptions="FillAndExpand"/>
+                                    <Label Text="Remove Image"
+                                           Style="{StaticResource PageSubHeaderSubTitleStyle}" 
+                                           HorizontalOptions="End"
+                                           VerticalOptions="Start"
+                                           TextDecorations="Underline">
+                                        <Label.GestureRecognizers>
+                                            <!-- Note the use of Source={x:Reference ThisPage} to correctly bind the command within a DataTemplate -->
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.RemoveImageFromGalleryCommand, Source={x:Reference ThisAddPage}}"
+                                                                  CommandParameter="{Binding .}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="60" HorizontalOptions="Center" VerticalOptions="Start">
+                        <!-- Capture Image Option -->
+                        <Border Stroke="Transparent" Background="Transparent"
+                                HeightRequest="72" 
+                                WidthRequest="72">      
+                            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CaptureImageToGalleryCommand}" NumberOfTapsRequired="1"/>
+                                </StackLayout.GestureRecognizers>
+                                <ImageButton BackgroundColor="Transparent"
+                                             HorizontalOptions="Start"
+                                             VerticalOptions="Start"
+                                             Command="{Binding CaptureImageToGalleryCommand}">
+                                    <ImageButton.Source>
+                                        <FontImageSource Glyph="{x:Static helpers:IconFont.Camera}"
+                                                         Color="{StaticResource ColorPrimaryDarkShade}"
+                                                         FontFamily="IconFontTypes" />  
+                                    </ImageButton.Source>
+                                </ImageButton>
+                                <Label Text="Capture" HorizontalTextAlignment="Center" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding CaptureImageToGalleryCommand}" NumberOfTapsRequired="1"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                        </Border>
+
+                        <!-- Select Image Option -->
+                        <Border Stroke="Transparent" Background="Transparent"
+                                HeightRequest="72" 
+                                WidthRequest="150">
+                            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectImageToGalleryCommand}" NumberOfTapsRequired="1"/>
+                                </StackLayout.GestureRecognizers>
+                                <ImageButton BackgroundColor="Transparent"
+                                             HorizontalOptions="Start"
+                                             VerticalOptions="Start"
+                                             Command="{Binding SelectImageToGalleryCommand}">
+                                    <ImageButton.Source>
+                                        <FontImageSource Glyph="{x:Static helpers:IconFont.CameraBurst}"
+                                                         Color="{StaticResource ColorPrimaryDarkShade}"
+                                                         FontFamily="IconFontTypes" />
+                                    </ImageButton.Source>
+                                </ImageButton>
+                                <Label Text="Select Image" HorizontalTextAlignment="Center" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SelectImageToGalleryCommand}" NumberOfTapsRequired="1"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                        </Border>
+                    </StackLayout>
+                </StackLayout>
+
+                <!-- Save Button -->
+                <HorizontalStackLayout HorizontalOptions="End" Spacing="10" Margin="0,24">
+                    <Button Text="Save"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            WidthRequest="100"
+                            HeightRequest="50"
+                            VerticalOptions="Center"
+                            Command="{Binding SaveNewEventCommand}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

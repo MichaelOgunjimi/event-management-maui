@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:EventyMaui.Helpers"
+             xmlns:vm="clr-namespace:EventyMaui.ViewModels"
+             x:Class="EventyMaui.Views.EventDetailsPage"
+
+             Title="{Binding SelectedEvent.Name}"
+             NavigationPage.HasNavigationBar="False"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource ColorBackground}">
+  <!--Margin="24,52,24,0"-->
+
+  <Grid>
+    <ScrollView>
+      <Grid>
+        <VerticalStackLayout Spacing="10"
+                             Margin="24,52,24,0">
+          <!-- Event Image -->
+          <Image Source="{Binding SelectedEvent.HeroImage}"
+                 HorizontalOptions="FillAndExpand"
+                 Aspect="AspectFill"
+                 HeightRequest="400"
+                 Margin="-24,-52,-24,0"/>
+
+          <!-- Event Name -->
+          <Label Style="{StaticResource EventHeaderStyle}"
+                 Text="{Binding SelectedEvent.Name}"/>
+
+          <!-- Event Category and Date -->
+          <Grid RowDefinitions="*" ColumnDefinitions="*, *">
+            <Label Grid.Column="0"
+                   Text="{Binding SelectedEvent.Category}"
+                   HorizontalOptions="Start"
+                   Margin="0,-12,0,0"
+                   Style="{StaticResource EventHeaderSubtitleStyle}" />
+
+            <!-- Event Date -->
+            <Label Grid.Column="1"
+                   Style="{StaticResource PageSubHeaderSubTitleStyle}"
+              Text="{Binding SelectedEvent.Date, StringFormat='{0:MMMM dd, yyyy}'}"
+                   HorizontalOptions="End" />
+          </Grid>
+
+          <!-- Divider -->
+          <Rectangle
+            HorizontalOptions="Fill"
+            HeightRequest="2"
+            Stroke="Transparent"
+            Fill="{StaticResource ColorAccent}" />
+            
+          <!-- Event Description -->
+          <Label Style="{StaticResource EventDetailsTextStyle}"
+                 Text="{Binding SelectedEvent.Description}"/>
+
+          <!-- Divider -->
+          <Rectangle
+              HorizontalOptions="Fill"
+              HeightRequest="2"
+              Stroke="Transparent"
+              Fill="{StaticResource ColorAccent}" />
+
+          <!-- Planet Gallery -->
+          <Label
+              Style="{StaticResource EventHeaderSubtitleStyle}"
+              Text="Gallery" />
+            
+          <StackLayout BindableLayout.ItemsSource="{Binding SelectedEvent.Gallery}" 
+                       Spacing="10">
+              <BindableLayout.ItemTemplate>
+                  <DataTemplate>
+                      <Border Padding="0" 
+                              StrokeThickness="0"
+                              StrokeShape="RoundRectangle 10, 10, 10, 10" 
+                              BackgroundColor="Transparent"
+                              HeightRequest="300">
+                          <Image Source="{Binding .}"
+                              Aspect="AspectFill" />
+                      </Border>
+                      
+                  </DataTemplate>
+              </BindableLayout.ItemTemplate>
+          </StackLayout>
+            
+          <HorizontalStackLayout HorizontalOptions="End" Spacing="10" Margin="0,24">
+              <Button Text=" Edit "
+                      Style="{StaticResource SecondaryButtonStyle}"
+                      WidthRequest="100"
+                      HeightRequest="50"
+                      VerticalOptions="Center"
+                      Clicked="OnEditButtonClicked"/>
+              
+              <Button Text="Delete"
+                      Style="{StaticResource PrimaryButtonStyle}"
+                      WidthRequest="100"
+                      HeightRequest="50"
+                      VerticalOptions="Center"
+                      Clicked="OnDeleteButtonClicked"/>
+              
+          </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+          
+        <!-- Header Buttons -->
+        <Grid RowDefinitions="Auto" ColumnDefinitions="*, *">
+          <ImageButton Style="{DynamicResource BackImageButtonStyle}"
+                       BackgroundColor="Transparent"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Start"
+                       Clicked="OnBackButtonClicked">
+            <ImageButton.Source>
+              <FontImageSource Glyph="{x:Static helpers:IconFont.ChevronLeft}"
+                               FontFamily="IconFontTypes" />
+            </ImageButton.Source>
+          </ImageButton>
+
+          <ImageButton Style="{DynamicResource BackImageButtonStyle}"
+                       BackgroundColor="Transparent"
+                       HorizontalOptions="End"
+                       VerticalOptions="Start"
+                       Grid.Column="1"
+                       Clicked="OnFavoriteButtonClicked">
+            <ImageButton.Triggers>
+              <DataTrigger TargetType="ImageButton"
+                           Binding="{Binding SelectedEvent.IsFavorite}"
+                           Value="True">
+                <Setter Property="Source">
+                  <Setter.Value>
+                    <FontImageSource Glyph="{x:Static helpers:IconFont.Heart}"
+                                     FontFamily="IconFontTypes" />
+                  </Setter.Value>
+                </Setter>
+              </DataTrigger>
+              <DataTrigger TargetType="ImageButton"
+                           Binding="{Binding SelectedEvent.IsFavorite}"
+                           Value="False">
+                <Setter Property="Source">
+                  <Setter.Value>
+                    <FontImageSource Glyph="{x:Static helpers:IconFont.HeartOutline}"
+                                     FontFamily="IconFontTypes" />
+                  </Setter.Value>
+                </Setter>
+              </DataTrigger>
+            </ImageButton.Triggers>
+          </ImageButton>
+        </Grid>
+
+      </Grid>
+    </ScrollView>
+  </Grid>
+</ContentPage>

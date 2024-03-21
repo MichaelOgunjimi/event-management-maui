@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="EventyMaui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:EventyMaui"
+    xmlns:views="clr-namespace:EventyMaui.Views"
+    Shell.FlyoutBehavior="Disabled">
+
+    <ShellContent
+        Title="StartPage"
+        ContentTemplate="{DataTemplate views:StartPage}"
+        Route="Start" />
+    
+    <ShellContent
+        Title="HomePage"
+        ContentTemplate="{DataTemplate views:HomePage}"
+        Route="Home" />
+
+    <ShellContent
+        Title="EventDetailsPage"
+        ContentTemplate="{DataTemplate views:EventDetailsPage}"
+        Route="EventDetail" />
+
+    <ShellContent
+        Title="AddEventPage"
+        ContentTemplate="{DataTemplate views:AddEventPage}"
+        Route="AddEvent" />
+    
+    <ShellContent
+        Title="EditEventPage"
+        ContentTemplate="{DataTemplate views:EditEventPage}"
+        Route="EditEvent" />
+
+    <ShellContent
+        Title="EventsPage"
+        ContentTemplate="{DataTemplate views:EventsPage}"
+        Route="EventsPage" />
+
+
+</Shell>

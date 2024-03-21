@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EventyMaui.Views.HomePage"
+             xmlns:viewmodels="clr-namespace:EventyMaui.ViewModels;assembly=EventyMaui"
+             xmlns:helpers="clr-namespace:EventyMaui.Helpers"
+             
+             xmlns:cards="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
+
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasBackButton="False"
+             NavigationPage.HasNavigationBar="False"
+             
+             BackgroundColor="{StaticResource ColorBackground}"
+             Title="HomePage">
+
+    <ContentPage.BindingContext>
+        <viewmodels:HomeViewModel/>
+    </ContentPage.BindingContext>
+
+
+    <ScrollView HorizontalScrollBarVisibility="Never"
+            VerticalScrollBarVisibility="Never">
+        <Grid Margin="0, 20, 0, 0"
+          RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
+
+            <!-- Header -->
+            <Grid Grid.Row="0"
+              ColumnDefinitions="*, Auto"
+              Background="Transparent"
+              Margin="20, 0">
+                <ImageButton Grid.Column="0"
+                         Style="{DynamicResource HomeIconStyle}"
+                         VerticalOptions="CenterAndExpand">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="{x:Static helpers:IconFont.Menu}"
+                                     FontFamily="IconFontTypes"
+                                     Color="{StaticResource ColorAccent}"/>
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <Border Grid.Column="1"
+                    HeightRequest="60"
+                    WidthRequest="60"
+                    HorizontalOptions="End"
+                    StrokeShape="RoundRectangle 80, 80, 80, 80">
+                    <Image Aspect="AspectFill"
+                       Source="user_image.png"
+                       HeightRequest="100"
+                       WidthRequest="100" />
+                </Border>
+            </Grid>
+
+            <!-- Content -->
+            <!-- Title -->
+            <VerticalStackLayout Grid.Row="1"
+                             VerticalOptions="Center"
+                             Margin="20, 0, 20, 0"
+                             HeightRequest="100">
+                
+                <Label Style="{StaticResource PageHeaderStyle}"
+                        Text="Let's Plan Your Events" />
+                <Label Style="{StaticResource PageHeaderSubtitleStyle}"
+                       FontSize="16"
+                       Text="Ready to plan and manage your events seamlessly?"
+                       LineBreakMode="WordWrap"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+
+            <!-- Upcoming Events -->
+            <VerticalStackLayout Grid.Row="2"
+                             Spacing="10"
+                             Margin="20, 0, 20, 0"
+                             HeightRequest="120">
+                <VerticalStackLayout Margin="0, 0, 0, 5">
+                    <Label Style="{StaticResource PageSubHeaderStyle}"
+                            Text="Upcoming Events →"/>
+
+                    <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
+                           Text="Events that are coming up soon." />
+                </VerticalStackLayout>
+
+
+                <CollectionView ItemsSource="{Binding UpcomingEvents}"
+                                SelectionMode="Single"
+                                SelectionChanged="OnCollectionViewSelectionChanged"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Center"
+                                HeightRequest="60">
+                    <CollectionView.EmptyView>
+                        <Label Text="No Upcoming events available." HorizontalOptions="Center" />
+                    </CollectionView.EmptyView>
+                    <!-- Height adjusted for content -->
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions=".30*, .70*"
+                                                        WidthRequest="180"
+                                                        HeightRequest="60">
+                                <RoundRectangle Grid.ColumnSpan="2"
+                                                CornerRadius="45"
+                                                Fill="{StaticResource ColorSecondary}"/>        
+                                <Border Grid.RowSpan="2"
+                                        Margin="5, 0, 0, 0"
+                                        HeightRequest="50"
+                                        WidthRequest="50"
+                                        HorizontalOptions="Start"
+                                        StrokeShape="RoundRectangle 50, 50, 50, 50"
+                                        StrokeThickness="0">
+                                    <Image HeightRequest="50"
+                                            WidthRequest="50"
+                                            Aspect="AspectFill"
+                                            Source="{Binding HeroImage}" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1"
+                                        VerticalOptions="Center">
+                                    <Label Margin="10, 0, 0, 0"
+                                            Style="{StaticResource UpcomingTitleStyle}"
+                                            Text="{Binding Name}"
+                                            HorizontalOptions="Start"/>
+                                    <Label Margin="10, 0, 0, 0"
+                                            Style="{StaticResource UpcomingSubTitleStyle}"
+                                            Text="{Binding TimeDifference}"
+                                            HorizontalOptions="Start"/>  
+                                </VerticalStackLayout>
+                            </Grid>
+                            
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- Explore Events-->
+            <VerticalStackLayout Grid.Row="3"
+                                 Margin="20, 20, 20, 0"
+                                 Spacing="10"
+                                 HeightRequest="350">
+                <!-- Ensuring space for CoverFlowView -->
+                <VerticalStackLayout>
+                    <Label Style="{StaticResource PageSubHeaderStyle}"
+                            Text="Featured Events →" />
+
+                    <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
+                           Text="Events we thing you will like." />
+                </VerticalStackLayout>
+                
+                <cards:CoverFlowView ItemsSource="{Binding FeaturedEvents}"
+                                 HeightRequest="300"
+                                     Margin="-15, 0, 0, 0"
+                    HorizontalOptions="FillAndExpand">
+                    <x:Arguments>
+                        <proc:CoverFlowProcessor OpacityFactor="0.25" ScaleFactor="0.75" />
+                    </x:Arguments>
+                    <cards:CoverFlowView.ItemTemplate>
+                        <DataTemplate>
+                            <Border StrokeShape="RoundRectangle 25, 25, 25, 25" 
+                                        StrokeThickness="0" 
+                                        HeightRequest="300" WidthRequest="360">
+
+                                <Grid RowDefinitions=".7*,.3*">
+                                    <Image Grid.RowSpan="2" 
+                                        Aspect="AspectFill"
+                                           Source="{Binding HeroImage}" 
+                                           HeightRequest="300" WidthRequest="360"/>
+
+                                    <Grid Grid.Row="1">
+                                        <Rectangle Fill="Black"
+                                                   Opacity="0.5"
+                                                   StrokeThickness="0" />
+                                        <VerticalStackLayout Margin="10, 0 , 0, 0"
+                                                             VerticalOptions="Center">
+                                            <Label Style="{StaticResource PageSubHeaderStyle}"
+                                                   Text="{Binding Name}"
+                                                   TextColor="#fff"/>
+
+                                            <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
+                                                  Text="{Binding Description}" 
+                                                   TextColor="#fff"/>
+
+                                        </VerticalStackLayout>
+
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </cards:CoverFlowView.ItemTemplate>
+                </cards:CoverFlowView>
+            </VerticalStackLayout>
+            
+            <!-- Add Event Button-->
+            <HorizontalStackLayout Grid.Row="4"
+                                    HorizontalOptions="Center">
+                <Button Text="Add Event"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        HorizontalOptions="Center"
+                        Command="{Binding AddEventCommand}"/>
+                
+                <Button Text="Explore Events"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        HorizontalOptions="Center"
+                        Clicked="Button_Clicked"/>
+            </HorizontalStackLayout>
+           
+            <!-- Favorite Events -->
+            <VerticalStackLayout Grid.Row="5"
+                                 Margin="0, 0, 20, 0"
+                                 Spacing="10">
+
+                <VerticalStackLayout Margin="20, 0, 0,0">
+                    <Label Style="{StaticResource PageSubHeaderStyle}"
+                        Text="Favorite Events →"
+                        Margin="0, 10, 0, 0" />
+
+                    <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
+                           Text="Events that are in your favorites." />
+                </VerticalStackLayout>
+
+
+                <ListView ItemsSource="{Binding FavoriteEvents}"
+                          x:Name="FavoriteEventsListView"
+                          HasUnevenRows="True"
+                          SeparatorVisibility="None"
+                          SelectionMode="Single"
+                          ItemSelected="OnListViewItemSelected"
+                          HorizontalScrollBarVisibility="Never"
+                          VerticalScrollBarVisibility="Never"
+                          Margin="10, 0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Border StrokeShape="RoundRectangle 10, 10, 10, 10"
+                                        StrokeThickness="0"
+                                        Padding="0, 5"
+                                        BackgroundColor="Transparent">
+                                    
+                                    <Grid ColumnDefinitions="100, *"
+                                        Margin="0">
+                                        <!-- Remove margin if you want content flush with Frame edges -->
+                                        <Border Grid.Column="0"
+                                                HeightRequest="100"
+                                                WidthRequest="100"
+                                                StrokeShape="RoundRectangle 15"
+                                                StrokeThickness="0"
+                                                VerticalOptions="Center"
+                                                HorizontalOptions="Center"> 
+                                            <Image Source="{Binding HeroImage}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="100"
+                                                   WidthRequest="100"/>
+                                        </Border>
+
+                                        <VerticalStackLayout Grid.Column="1"
+                                                             VerticalOptions="Center"
+                                                             Spacing="5"
+                                                             Padding="10, 0, 0, 0">
+                                            <Label Text="{Binding Name}"
+                                                    FontSize="18"
+                                                    FontAttributes="Bold"
+                                                    VerticalOptions="Center"
+                                                    Style="{StaticResource UpcomingTitleStyle}"/>      
+
+                                            <Label Text="{Binding Location}"
+                                                   Style="{StaticResource UpcomingSubTitleStyle}"
+                                                   FontSize="14"
+                                                   VerticalOptions="Center" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </VerticalStackLayout>
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

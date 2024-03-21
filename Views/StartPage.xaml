@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EventyMaui.Views.StartPage"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasBackButton="False"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource ColorBackground}"
+             Title="StartPage">
+
+    <ContentPage.Content>
+        <Grid RowDefinitions="375, *">
+            <Grid Grid.Row="0" Padding="50">
+                <VerticalStackLayout>
+                    <!-- Added x:Name and left Opacity as default for the first label -->
+                    <Label x:Name="FirstPageLabel"
+                           Style="{StaticResource HeaderLabelStyle}" />
+
+                    <!-- Added x:Name and set Opacity to 0 for the Image -->
+                    <Image x:Name="HomePageImage"
+                           Source="startpage_logo.png"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Margin="40, 150, 0, 0"
+                           Aspect="AspectFit"
+                           Opacity="0" />
+
+
+
+
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Intro Box -->
+
+            <Grid x:Name="BottomGrid"
+                  Grid.Row="1"
+                  Opacity="0">
+                <Border Padding="24,32"
+                        BackgroundColor="{StaticResource ColorBackgroundDarkShade}"
+                        Stroke="{StaticResource BorderColor}"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="End"
+                        Margin="20">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="24"/>
+                    </Border.StrokeShape>
+
+                    <VerticalStackLayout Spacing="16">
+                        <Label
+                             HorizontalOptions="Center"
+                             HorizontalTextAlignment="Center"
+                             Style="{StaticResource TitleLabelStyle}"
+                             Text="Plan Your Events"/>
+
+
+                        <Label
+                             HorizontalOptions="Center"
+                             HorizontalTextAlignment="Center"
+                             LineBreakMode="WordWrap"
+                             Style="{StaticResource SubTitleLabelStyle}"
+                             Text="Your go-to app for effortlessly organizing and managing your event"/>
+
+                        <Button
+                             Style="{StaticResource PrimaryButtonStyle}"
+                             Text="Explore Now"
+                             HorizontalOptions="Center"
+                             Margin="0,12,0,6"
+                             Clicked="ExploreNow_Clicked"/>
+
+                        <!-- TESTING TO CAPTURE IMAGE -->
+                        <!--
+                        <Button
+                              Style="{StaticResource PrimaryButtonStyle}"
+                              Text="Capture Image"
+                              HorizontalOptions="Center"
+                              Margin="0,12,0,6"
+                              Clicked="CaptureImage_Clicked"/>-->
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+
+</ContentPage>

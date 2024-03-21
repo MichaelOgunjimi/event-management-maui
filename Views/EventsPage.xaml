@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EventyMaui.Views.EventsPage"
+             xmlns:vm="clr-namespace:EventyMaui.ViewModels"
+             Title="Events"
+             NavigationPage.HasNavigationBar="False"
+            Shell.NavBarIsVisible="False"
+            BackgroundColor="{StaticResource ColorBackground}">
+    <ContentPage.BindingContext>
+        <vm:EventsViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView
+        HorizontalScrollBarVisibility="Never"
+        VerticalScrollBarVisibility="Never">
+        <StackLayout>
+
+            <SearchBar Placeholder="Search events..." Text="{Binding SearchQuery, Mode=TwoWay}"/>
+            
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="End" VerticalOptions="Center" Margin="20">
+                <!-- Label for the filter -->
+                <Label Text="Filter:"
+                       VerticalOptions="Center"
+                       Style="{StaticResource PageSubHeaderStyle}"/>
+                <!-- Container to simulate button appearance -->
+                <Border
+                        StrokeThickness="2"
+                        Padding="0"
+                        StrokeShape="RoundRectangle 10, 10, 10, 10"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center">   
+                    <Picker x:Name="filterPicker"
+                            Title="Select Filter"
+                            SelectedIndexChanged="OnFilterChanged"
+                            >
+                        <Picker.Items>
+                            <x:String>All</x:String>
+                            <x:String>Upcoming</x:String>
+                            <x:String>Past</x:String>
+                            <x:String>Favorites</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </Border>
+            </HorizontalStackLayout>
+
+
+
+            
+
+            <CollectionView ItemsSource="{Binding Events}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <!-- Customize your event display template here -->
+                        <StackLayout>
+                            <Image Source="{Binding HeroImage}" Aspect="AspectFill"/>
+                            <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Description}"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>
