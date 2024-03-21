@@ -53,7 +53,8 @@
                               
                             Text="{Binding SearchQuery, Mode=TwoWay}" />
             </Grid>
-
+            
+            <!-- Filter -->
             <HorizontalStackLayout Spacing="10" HorizontalOptions="End" VerticalOptions="Center">
                 <!-- Label for the filter -->
                 <Label Text="Filter:"
@@ -79,37 +80,67 @@
                     </Picker>
                 </Border>
             </HorizontalStackLayout>
-
+            
+            <!-- Events -->
             <StackLayout BindableLayout.ItemsSource="{Binding Events}" Spacing="10" Margin="10, 0">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
-                        <Border Stroke="Transparent"
+                        <SwipeView>
+                            <!-- Left swipe actions -->
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="Favorite"
+                                               BackgroundColor="Yellow"
+                                               Command="{Binding Path=BindingContext.FavoriteCommand, Source={x:Reference ThisEventsPage}}"
+                                               CommandParameter="{Binding .}"
+                                               IconImageSource="{StaticResource FavoriteIcon}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+
+                            <!-- Right swipe actions -->
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="Edit"
+                                               BackgroundColor="LightBlue"
+                                               Command="{Binding Path=BindingContext.EditEventCommand, Source={x:Reference ThisEventsPage}}"
+                                               CommandParameter="{Binding .}"
+                                               IconImageSource="{StaticResource EditIcon}" />
+                                    <SwipeItem Text="Delete"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Path=BindingContext.DeleteEventCommand, Source={x:Reference ThisEventsPage}}"
+                                               CommandParameter="{Binding .}"
+                                               IconImageSource="{StaticResource DeleteIcon}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Border Stroke="Transparent"
                                     StrokeShape="RoundRectangle 10, 10, 10, 10"
                                     HeightRequest="120"
                                     BackgroundColor="Transparent">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Path=BindingContext.NavigateToEventDetailsCommand, Source={x:Reference ThisEventsPage}}"
-                                          CommandParameter="{Binding .}" />
-                            </Border.GestureRecognizers>
-                            <Grid>
-                                <Image Source="{Binding HeroImage}"
-                                            Aspect="AspectFill" />
-                                <!-- Semi-transparent overlay for text readability -->
-                                <BoxView Color="Black" Opacity="0.6"/>
-                                <StackLayout VerticalOptions="End" Padding="10">
-                                    <!-- Name and Category with a light color for visibility -->
-                                    <Label Text="{Binding Name}" 
-                                                TextColor="White" 
-                                                FontSize="Medium" 
-                                                FontAttributes="Bold"/>
-                                    <Label Text="{Binding Description}" 
-                                                TextColor="White"
-                                                FontSize="Small"
-                                                LineBreakMode="CharacterWrap"
-                                                HeightRequest="35"/>
-                                </StackLayout>
-                            </Grid>
-                        </Border>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.NavigateToEventDetailsCommand, Source={x:Reference ThisEventsPage}}"
+                                              CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid>
+                                    <Image Source="{Binding HeroImage}"
+                                                Aspect="AspectFill" />
+                                    <!-- Semi-transparent overlay for text readability -->
+                                    <BoxView Color="Black" Opacity="0.6"/>
+                                    <StackLayout VerticalOptions="End" Padding="10">
+                                        <!-- Name and Category with a light color for visibility -->
+                                        <Label Text="{Binding Name}" 
+                                                    TextColor="White" 
+                                                    FontSize="Medium" 
+                                                    FontAttributes="Bold"/>
+                                        <Label Text="{Binding Description}" 
+                                                    TextColor="White"
+                                                    FontSize="Small"
+                                                    LineBreakMode="CharacterWrap"
+                                                    HeightRequest="35"/>
+                                    </StackLayout>
+                                </Grid>
+                            </Border>
+                        </SwipeView>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </StackLayout>
@@ -119,9 +150,3 @@
     </ScrollView>
     
 </ContentPage>
-
-
-<!--<StackLayout Grid.Row="1" Orientation="Horizontal" BackgroundColor="#F0F0F0" VerticalOptions="FillAndExpand">
-     <Label Text="{Binding Name}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0" />
-     <Label Text="{Binding Category}" VerticalOptions="Center" HorizontalOptions="End" Margin="10,0" />
- </StackLayout>-->

@@ -46,7 +46,7 @@ namespace EventyMaui.Views
 
         private async void OnBackButtonClicked(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync(nameof(HomePage));
+            await Shell.Current.GoToAsync("..");
         }
 
         private void OnFavoriteButtonClicked(object sender, EventArgs e)

@@ -4,7 +4,7 @@ using Microsoft.Maui.Storage;
 
 namespace EventyMaui.Views
 {
-    [QueryProperty(nameof(CurrentFilter), "filter")]
+    [QueryProperty(nameof(CurrentFilter), "Filter")]
     public partial class EventsPage : ContentPage
     {
         public EventsPage()
