@@ -72,6 +72,7 @@
                         <Picker.Items>
                             <x:String>All</x:String>
                             <x:String>Upcoming</x:String>
+                            <x:String>Featured</x:String>
                             <x:String>Past</x:String>
                             <x:String>Favorites</x:String>
                         </Picker.Items>

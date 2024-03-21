@@ -38,7 +38,7 @@ namespace EventyMaui.Services
                 Name = "Tech Conference",
                 HeroImage = "tech_conference.png",
                 Description = "An annual tech conference bringing together industry leaders, innovators, and enthusiasts to explore the latest in technology.",
-                Date = new DateTime(2024, 03, 20),
+                Date = new DateTime(2024, 03, 22),
                 Location = "Convention Center, San Francisco",
                 Category = "Technology",
                 IsFavorite = false, 
@@ -156,7 +156,7 @@ namespace EventyMaui.Services
                 Name = "Comedy Festival",
                 HeroImage = "comedy_festival.png",
                 Description = "Get ready to laugh until your sides hurt at this hilarious comedy festival featuring the best stand-up comedians from around the world.",
-                Date = new DateTime(2024, 03, 01),
+                Date = new DateTime(2024, 03, 26),
                 Location = "Chicago, Illinois",
                 Category = "Entertainment",
                 IsFavorite = true,
@@ -220,6 +220,9 @@ namespace EventyMaui.Services
             {
                 case "Favorites":
                     baseQuery = GetFavoriteEvents();
+                    break;
+                case "Featured":
+                    baseQuery = GetFeaturedEvents();
                     break;
                 case "Upcoming":
                     baseQuery = GetUpcomingEvents();
@@ -384,6 +387,10 @@ namespace EventyMaui.Services
             }
             else
             {
+                if (timeDifference.Days / 30 == 1)
+                {
+                    return "In a month";
+                }
 
                 return $"In  {timeDifference.Days / 30} months";
             }

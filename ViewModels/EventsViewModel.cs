@@ -81,6 +81,10 @@ namespace EventyMaui.ViewModels
                     Events = new ObservableCollection<Event>(EventService.GetFavoriteEvents());
                     PageTitle = "Favorite Events";
                     break;
+                case "Featured":
+                    Events = new ObservableCollection<Event>(EventService.GetFeaturedEvents());
+                    PageTitle = "Featured Events";
+                    break;
                 case "Upcoming":
                     Events = new ObservableCollection<Event>(EventService.GetUpcomingEvents());
                     PageTitle = "Upcoming Events";

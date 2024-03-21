@@ -13,7 +13,8 @@
              NavigationPage.HasNavigationBar="False"
              
              BackgroundColor="{StaticResource ColorBackground}"
-             Title="HomePage">
+             Title="HomePage"
+             x:Name="ThisHomePage">
 
     <ContentPage.BindingContext>
         <viewmodels:HomeViewModel/>
@@ -73,13 +74,15 @@
                              Spacing="10"
                              Margin="20, 0, 20, 0"
                              HeightRequest="120">
-                <VerticalStackLayout Margin="0, 0, 0, 5">
+                <StackLayout Margin="0, 0, 0, 5" Orientation="Vertical">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}" CommandParameter="Upcoming" />
+                    </StackLayout.GestureRecognizers>
                     <Label Style="{StaticResource PageSubHeaderStyle}"
-                            Text="Upcoming Events →"/>
-
+                           Text="Upcoming Events →"/>
                     <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
                            Text="Events that are coming up soon." />
-                </VerticalStackLayout>
+                </StackLayout>
 
 
                 <CollectionView ItemsSource="{Binding UpcomingEvents}"
@@ -139,18 +142,20 @@
                                  Spacing="10"
                                  HeightRequest="350">
                 <!-- Ensuring space for CoverFlowView -->
-                <VerticalStackLayout>
+                <StackLayout Orientation="Vertical">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}" CommandParameter="Featured" />
+                    </StackLayout.GestureRecognizers>
                     <Label Style="{StaticResource PageSubHeaderStyle}"
-                            Text="Featured Events →" />
-
+                           Text="Featured Events →" />
                     <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
-                           Text="Events we thing you will like." />
-                </VerticalStackLayout>
-                
+                           Text="Events we think you will like." />
+                </StackLayout>
+
                 <cards:CoverFlowView ItemsSource="{Binding FeaturedEvents}"
-                                 HeightRequest="300"
+                                     HeightRequest="300"
                                      Margin="-15, 0, 0, 0"
-                    HorizontalOptions="FillAndExpand">
+                                     HorizontalOptions="FillAndExpand">
                     <x:Arguments>
                         <proc:CoverFlowProcessor OpacityFactor="0.25" ScaleFactor="0.75" />
                     </x:Arguments>
@@ -159,6 +164,10 @@
                             <Border StrokeShape="RoundRectangle 25, 25, 25, 25" 
                                         StrokeThickness="0" 
                                         HeightRequest="300" WidthRequest="360">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.NavigateToEventDetailsCommand, Source={x:Reference ThisHomePage}}"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
 
                                 <Grid RowDefinitions=".7*,.3*">
                                     <Image Grid.RowSpan="2" 
@@ -209,14 +218,16 @@
                                  Margin="0, 0, 20, 0"
                                  Spacing="10">
 
-                <VerticalStackLayout Margin="20, 0, 0,0">
+                <StackLayout Margin="20, 0, 0, 0" Orientation="Vertical">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}" CommandParameter="Favorites" />
+                    </StackLayout.GestureRecognizers>
                     <Label Style="{StaticResource PageSubHeaderStyle}"
-                        Text="Favorite Events →"
-                        Margin="0, 10, 0, 0" />
-
+                           Text="Favorite Events →"
+                           Margin="0, 10, 0, 0" />
                     <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
                            Text="Events that are in your favorites." />
-                </VerticalStackLayout>
+                </StackLayout>
 
 
                 <ListView ItemsSource="{Binding FavoriteEvents}"

@@ -19,7 +19,8 @@ namespace EventyMaui.ViewModels
         public ICommand SearchCommand { get; set; }
         public ICommand EventSelectedCommand { get; set; }
         public ICommand AddEventCommand { get; set; }
-
+        public ICommand NavigateToEventDetailsCommand { get; private set; }
+        public ICommand NavigateCommandToEvents { get; private set; }
 
         public HomeViewModel()
         {
@@ -30,7 +31,24 @@ namespace EventyMaui.ViewModels
             SearchCommand = new Command(ExecuteSearchCommand);
             EventSelectedCommand = new Command<Event>(async (item) => await OnEventSelected(item));
             AddEventCommand = new Command(async () => await AddEvent());
+            NavigateToEventDetailsCommand = new Command<Event>(async (eventy) => await NavigateToEventDetails(eventy));
+            NavigateCommandToEvents = new Command<string>(async (filter) => await NavigateToEvents(filter));
+            
         }
+
+        private async Task NavigateToEventDetails(Event selectedEvent)
+        {
+            if (selectedEvent != null)
+            {
+                await Shell.Current.GoToAsync($"{nameof(EventDetailsPage)}?EventId={selectedEvent.EventId}");
+            }
+        }
+
+        private async Task NavigateToEvents(string filter)
+        {
+            await Shell.Current.GoToAsync($"{nameof(EventsPage)}?Filter={filter}");
+        }
+
 
         public void LoadData()
         {
