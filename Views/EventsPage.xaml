@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:EventyMaui.Helpers"
              x:Class="EventyMaui.Views.EventsPage"
              xmlns:vm="clr-namespace:EventyMaui.ViewModels"
              Title="Events"
@@ -14,53 +15,88 @@
     <ScrollView
         HorizontalScrollBarVisibility="Never"
         VerticalScrollBarVisibility="Never">
-        <StackLayout>
 
-            <SearchBar Placeholder="Search events..." Text="{Binding SearchQuery, Mode=TwoWay}"/>
-            
-            <HorizontalStackLayout Spacing="10" HorizontalOptions="End" VerticalOptions="Center" Margin="20">
-                <!-- Label for the filter -->
-                <Label Text="Filter:"
-                       VerticalOptions="Center"
-                       Style="{StaticResource PageSubHeaderStyle}"/>
-                <!-- Container to simulate button appearance -->
-                <Border
-                        StrokeThickness="2"
-                        Padding="0"
-                        StrokeShape="RoundRectangle 10, 10, 10, 10"
-                        BackgroundColor="Transparent"
-                        VerticalOptions="Center">   
-                    <Picker x:Name="filterPicker"
-                            Title="Select Filter"
-                            SelectedIndexChanged="OnFilterChanged"
-                            >
-                        <Picker.Items>
-                            <x:String>All</x:String>
-                            <x:String>Upcoming</x:String>
-                            <x:String>Past</x:String>
-                            <x:String>Favorites</x:String>
-                        </Picker.Items>
-                    </Picker>
-                </Border>
-            </HorizontalStackLayout>
+            <VerticalStackLayout >
+                <HorizontalStackLayout>
+                    <!-- Back Button -->
+                    <ImageButton Style="{DynamicResource BackImageButtonStyle}"
+                                 HorizontalOptions="Start"
+                                 VerticalOptions="Center"
+                                 Clicked="OnBackButtonClicked">
+                        <ImageButton.Source>
+                            <FontImageSource Glyph="{x:Static helpers:IconFont.ChevronLeft}"
+                             FontFamily="IconFontTypes" />
+                        </ImageButton.Source>
+                    </ImageButton>
+
+                    <!-- Title -->
+                    <Label Text="{Binding PageTitle}"
+                           Margin="20,0,0,0"
+                           FontSize="26"
+                           Style="{StaticResource PageSubHeaderStyle}"
+                           HorizontalOptions="Center" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                
+                <!-- Search Bar -->
+                <Grid Margin="25, 10, 25, 0">
+                    <RoundRectangle
+                        CornerRadius="25"
+                        Fill="{StaticResource ColorSecondaryLightTint}"
+                        HeightRequest="50"
+                        />
+                    <SearchBar CancelButtonColor="{StaticResource ColorTextDarkShade}"
+                              Placeholder="Search events..."
+                              PlaceholderColor="{StaticResource ColorTextDarkShade}"
+                              TextColor="{StaticResource ColorTextDarkShade}"
+                               FontSize="16"
+                              
+                              Text="{Binding SearchQuery, Mode=TwoWay}" />
+                </Grid>
+
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="End" VerticalOptions="Center">
+                    <!-- Label for the filter -->
+                    <Label Text="Filter:"
+                           VerticalOptions="Center"
+                           Style="{StaticResource PageSubHeaderStyle}"
+                           FontSize="16"/>
+                    <!-- Container to simulate button appearance -->
+                    <Border Stroke="Transparent"
+                            BackgroundColor="Transparent"
+                            VerticalOptions="Center">
+                        <Picker x:Name="filterPicker"
+                                Title="Select Filter"
+                                SelectedIndexChanged="OnFilterChanged"
+                                FontFamily="JosefinSansRegular"
+                                FontSize="14">
+                            <Picker.Items>
+                                <x:String>All</x:String>
+                                <x:String>Upcoming</x:String>
+                                <x:String>Past</x:String>
+                                <x:String>Favorites</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </Border>
+                </HorizontalStackLayout>
+
+
+            </VerticalStackLayout>
 
 
 
-            
 
-            <CollectionView ItemsSource="{Binding Events}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <!-- Customize your event display template here -->
-                        <StackLayout>
-                            <Image Source="{Binding HeroImage}" Aspect="AspectFill"/>
-                            <Label Text="{Binding Name}" FontAttributes="Bold"/>
-                            <Label Text="{Binding Description}"/>
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </StackLayout>
+
+
+
+
+
+
+
     </ScrollView>
     
 </ContentPage>
+
+
+<!--<StackLayout Grid.Row="1" Orientation="Horizontal" BackgroundColor="#F0F0F0" VerticalOptions="FillAndExpand">
+     <Label Text="{Binding Name}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0" />
+     <Label Text="{Binding Category}" VerticalOptions="Center" HorizontalOptions="End" Margin="10,0" />
+ </StackLayout>-->
