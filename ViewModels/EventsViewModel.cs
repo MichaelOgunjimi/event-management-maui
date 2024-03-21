@@ -3,6 +3,7 @@ using EventyMaui.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
+using EventyMaui.Views;
 
 namespace EventyMaui.ViewModels
 {
@@ -50,12 +51,22 @@ namespace EventyMaui.ViewModels
         }
 
         public ICommand SearchEventsCommand { get; private set; }
+        public ICommand NavigateToEventDetailsCommand { get; private set; }
 
         public EventsViewModel()
         {
             Events = new ObservableCollection<Event>(EventService.GetAllEvents());
             SearchEventsCommand = new Command<string>(PerformSearch);
+            NavigateToEventDetailsCommand = new Command<Event>(async (eventy) => await NavigateToEventDetails(eventy));
             RefreshEvents(_currentFilter); // Initial refresh based on default filter
+        }
+
+        private async Task NavigateToEventDetails(Event selectedEvent)
+        {
+            if (selectedEvent != null)
+            {
+                await Shell.Current.GoToAsync($"{nameof(EventDetailsPage)}?EventId={selectedEvent.EventId}");
+            }
         }
 
         private void RefreshEvents(string filter)
@@ -93,7 +104,7 @@ namespace EventyMaui.ViewModels
             }
             else
             {
-                Events = new ObservableCollection<Event>(EventService.SearchEvents(query));
+                Events = new ObservableCollection<Event>(EventService.SearchEvents(query, _currentFilter));
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -208,28 +209,46 @@ namespace EventyMaui.Services
             return randomizedEvents.Take(6).ToList();
         }
 
-        public static List<Event> SearchEvents(string filterText)
+        public static List<Event> SearchEvents(string filterText, string filter)
         {
-            var filteredEvents = _events
-                .Where(x => !string.IsNullOrWhiteSpace(x.Name) && x.Name.StartsWith(filterText, StringComparison.OrdinalIgnoreCase))
-                .ToList();
 
-            if (filteredEvents == null || filteredEvents.Count <= 0)
-                filteredEvents = _events
-                    .Where(x => !string.IsNullOrWhiteSpace(x.Location) && x.Location.StartsWith(filterText, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-            else
-                return filteredEvents;
+            Debug.WriteLine(filterText, filter);
+            IEnumerable<Event> baseQuery;
 
-            if (filteredEvents == null || filteredEvents.Count <= 0)
-                filteredEvents = _events
-                    .Where(x => !string.IsNullOrWhiteSpace(x.Category) && x.Category.StartsWith(filterText, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-            else
-                return filteredEvents;
+            // First, filter the events based on the specified filter.
+            switch (filter)
+            {
+                case "Favorites":
+                    baseQuery = GetFavoriteEvents();
+                    break;
+                case "Upcoming":
+                    baseQuery = GetUpcomingEvents();
+                    break;
+                case "Past":
+                    baseQuery = GetPastEvents();
+                    break;
+                default: // "All" or any unspecified filter falls back to fetching all events.
+                    baseQuery = GetAllEvents();
+                    break;
+            }
 
-            return filteredEvents;
+            // Next, apply the search query if there is one.
+            if (!string.IsNullOrWhiteSpace(filterText))
+            {
+                // Adjusted to a more concise search across multiple fields.
+                baseQuery = baseQuery.Where(e =>
+                    (!string.IsNullOrWhiteSpace(e.Name) && e.Name.StartsWith(filterText, StringComparison.OrdinalIgnoreCase)) ||
+                    (!string.IsNullOrWhiteSpace(e.Location) && e.Location.StartsWith(filterText, StringComparison.OrdinalIgnoreCase)) ||
+                    (!string.IsNullOrWhiteSpace(e.Category) && e.Category.StartsWith(filterText, StringComparison.OrdinalIgnoreCase)) ||
+                    (!string.IsNullOrWhiteSpace(e.Description) && e.Description.Contains(filterText, StringComparison.OrdinalIgnoreCase))
+                );
+            }
+
+            Debug.WriteLine($"Filtered events count: {baseQuery.Count()}");
+
+            return baseQuery.ToList();
         }
+
 
         // Get Gallery images
         public static List<string> GetGalleryForEvent(int eventId)

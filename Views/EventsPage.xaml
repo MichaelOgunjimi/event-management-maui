@@ -5,7 +5,8 @@
              x:Class="EventyMaui.Views.EventsPage"
              xmlns:vm="clr-namespace:EventyMaui.ViewModels"
              Title="Events"
-             NavigationPage.HasNavigationBar="False"
+             x:Name="ThisEventsPage"
+    NavigationPage.HasNavigationBar="False"
             Shell.NavBarIsVisible="False"
             BackgroundColor="{StaticResource ColorBackground}">
     <ContentPage.BindingContext>
@@ -16,80 +17,103 @@
         HorizontalScrollBarVisibility="Never"
         VerticalScrollBarVisibility="Never">
 
-            <VerticalStackLayout >
-                <HorizontalStackLayout>
-                    <!-- Back Button -->
-                    <ImageButton Style="{DynamicResource BackImageButtonStyle}"
-                                 HorizontalOptions="Start"
-                                 VerticalOptions="Center"
-                                 Clicked="OnBackButtonClicked">
-                        <ImageButton.Source>
-                            <FontImageSource Glyph="{x:Static helpers:IconFont.ChevronLeft}"
-                             FontFamily="IconFontTypes" />
-                        </ImageButton.Source>
-                    </ImageButton>
+        <VerticalStackLayout >
+            <HorizontalStackLayout>
+                <!-- Back Button -->
+                <ImageButton Style="{DynamicResource BackImageButtonStyle}"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Center"
+                                Clicked="OnBackButtonClicked">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="{x:Static helpers:IconFont.ChevronLeft}"
+                            FontFamily="IconFontTypes" />
+                    </ImageButton.Source>
+                </ImageButton>
 
-                    <!-- Title -->
-                    <Label Text="{Binding PageTitle}"
-                           Margin="20,0,0,0"
-                           FontSize="26"
-                           Style="{StaticResource PageSubHeaderStyle}"
-                           HorizontalOptions="Center" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                
-                <!-- Search Bar -->
-                <Grid Margin="25, 10, 25, 0">
-                    <RoundRectangle
-                        CornerRadius="25"
-                        Fill="{StaticResource ColorSecondaryLightTint}"
-                        HeightRequest="50"
-                        />
-                    <SearchBar CancelButtonColor="{StaticResource ColorTextDarkShade}"
-                              Placeholder="Search events..."
-                              PlaceholderColor="{StaticResource ColorTextDarkShade}"
-                              TextColor="{StaticResource ColorTextDarkShade}"
-                               FontSize="16"
+                <!-- Title -->
+                <Label Text="{Binding PageTitle}"
+                        Margin="20,0,0,0"
+                        FontSize="26"
+                        Style="{StaticResource PageSubHeaderStyle}"
+                        HorizontalOptions="Center" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+
+            <!-- Search Bar -->
+            <Grid Margin="25, 10, 25, 0">
+                <RoundRectangle
+                    CornerRadius="25"
+                    Fill="{StaticResource ColorSecondaryLightTint}"
+                    HeightRequest="50"
+                    />
+                <SearchBar CancelButtonColor="{StaticResource ColorTextDarkShade}"
+                            Placeholder="Search events..."
+                            PlaceholderColor="{StaticResource ColorTextDarkShade}"
+                            TextColor="{StaticResource ColorTextDarkShade}"
+                            FontSize="16"
                               
-                              Text="{Binding SearchQuery, Mode=TwoWay}" />
-                </Grid>
+                            Text="{Binding SearchQuery, Mode=TwoWay}" />
+            </Grid>
 
-                <HorizontalStackLayout Spacing="10" HorizontalOptions="End" VerticalOptions="Center">
-                    <!-- Label for the filter -->
-                    <Label Text="Filter:"
-                           VerticalOptions="Center"
-                           Style="{StaticResource PageSubHeaderStyle}"
-                           FontSize="16"/>
-                    <!-- Container to simulate button appearance -->
-                    <Border Stroke="Transparent"
-                            BackgroundColor="Transparent"
-                            VerticalOptions="Center">
-                        <Picker x:Name="filterPicker"
-                                Title="Select Filter"
-                                SelectedIndexChanged="OnFilterChanged"
-                                FontFamily="JosefinSansRegular"
-                                FontSize="14">
-                            <Picker.Items>
-                                <x:String>All</x:String>
-                                <x:String>Upcoming</x:String>
-                                <x:String>Past</x:String>
-                                <x:String>Favorites</x:String>
-                            </Picker.Items>
-                        </Picker>
-                    </Border>
-                </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="End" VerticalOptions="Center">
+                <!-- Label for the filter -->
+                <Label Text="Filter:"
+                        VerticalOptions="Center"
+                        Style="{StaticResource PageSubHeaderStyle}"
+                        FontSize="16"/>
+                <!-- Container to simulate button appearance -->
+                <Border Stroke="Transparent"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center">
+                    <Picker x:Name="filterPicker"
+                            Title="Select Filter"
+                            SelectedIndexChanged="OnFilterChanged"
+                            FontFamily="JosefinSansRegular"
+                            FontSize="14">
+                        <Picker.Items>
+                            <x:String>All</x:String>
+                            <x:String>Upcoming</x:String>
+                            <x:String>Past</x:String>
+                            <x:String>Favorites</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </Border>
+            </HorizontalStackLayout>
 
+            <StackLayout BindableLayout.ItemsSource="{Binding Events}" Spacing="10" Margin="10, 0">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10, 10, 10, 10"
+                                    HeightRequest="120"
+                                    BackgroundColor="Transparent">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.NavigateToEventDetailsCommand, Source={x:Reference ThisEventsPage}}"
+                                          CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <Grid>
+                                <Image Source="{Binding HeroImage}"
+                                            Aspect="AspectFill" />
+                                <!-- Semi-transparent overlay for text readability -->
+                                <BoxView Color="Black" Opacity="0.6"/>
+                                <StackLayout VerticalOptions="End" Padding="10">
+                                    <!-- Name and Category with a light color for visibility -->
+                                    <Label Text="{Binding Name}" 
+                                                TextColor="White" 
+                                                FontSize="Medium" 
+                                                FontAttributes="Bold"/>
+                                    <Label Text="{Binding Description}" 
+                                                TextColor="White"
+                                                FontSize="Small"
+                                                LineBreakMode="CharacterWrap"
+                                                HeightRequest="35"/>
+                                </StackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
 
-            </VerticalStackLayout>
-
-
-
-
-
-
-
-
-
-
+        </VerticalStackLayout>
 
     </ScrollView>
     
