@@ -25,6 +25,7 @@ namespace EventyMaui.ViewModels
             set => SetProperty(ref editableEvent, value);
         }
 
+        public DateTime MinimumEventDate => DateTime.Today.AddDays(1);
         public ICommand SaveEventCommand { get; }
         public ICommand DeleteEventCommand { get; }
         public ICommand CaptureImageCommand { get; }
@@ -205,6 +206,7 @@ namespace EventyMaui.ViewModels
                 }
 
                 EventService.AddImageToGallery(EditableEvent.EventId, newFile);
+                
 
             }
             catch (Exception ex)

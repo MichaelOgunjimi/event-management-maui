@@ -13,6 +13,7 @@ namespace EventyMaui.ViewModels
         private string _searchQuery;
         private string _currentFilter = "All";
         private string _pageTitle = "Events";
+        private bool _isEventsAvailable;
 
         public ObservableCollection<Event> Events
         {
@@ -50,6 +51,12 @@ namespace EventyMaui.ViewModels
             }
         }
 
+        public bool IsEventsAvailable
+        {
+            get => _isEventsAvailable;
+            set => SetProperty(ref _isEventsAvailable, value);
+        }
+
         public ICommand SearchEventsCommand { get; private set; }
         public ICommand NavigateToEventDetailsCommand { get; private set; }
         public ICommand ToggleFavoriteCommand { get; private set; }
@@ -81,6 +88,7 @@ namespace EventyMaui.ViewModels
         {
             EventService.ToggleFavorite(eventObj.EventId);
             PerformSearch(_searchQuery); // Refresh to show updated favorite status
+            IsEventsAvailable = Events.Any();
         }
 
         private async Task EditEvent(Event eventObj)
@@ -96,6 +104,7 @@ namespace EventyMaui.ViewModels
         {
             EventService.DeleteEvent(eventObj.EventId);
             Events.Remove(eventObj); // UI update
+            IsEventsAvailable = Events.Any();
         }
 
         private void RefreshEvents(string filter)
@@ -127,6 +136,7 @@ namespace EventyMaui.ViewModels
                     PageTitle = "Events";
                     break;
             }
+            IsEventsAvailable = Events.Any();
         }
 
         private void PerformSearch(string query)
@@ -138,6 +148,7 @@ namespace EventyMaui.ViewModels
             else
             {
                 Events = new ObservableCollection<Event>(EventService.SearchEvents(query, _currentFilter));
+                IsEventsAvailable = Events.Any();
             }
         }
     }

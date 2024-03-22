@@ -53,7 +53,7 @@
                               
                             Text="{Binding SearchQuery, Mode=TwoWay}" />
             </Grid>
-            
+
             <!-- Filter -->
             <HorizontalStackLayout Spacing="10" HorizontalOptions="End" VerticalOptions="Center">
                 <!-- Label for the filter -->
@@ -80,15 +80,37 @@
                     </Picker>
                 </Border>
             </HorizontalStackLayout>
-            
+
             <!-- Events -->
-            <StackLayout BindableLayout.ItemsSource="{Binding Events}" Spacing="10" Margin="10, 0">
+            <StackLayout Orientation="Horizontal"
+                         IsVisible="{Binding IsEventsAvailable, Converter={StaticResource InverseBooleanConverter}}"
+                         HorizontalOptions="Center"
+                         VerticalOptions="CenterAndExpand"
+                         Spacing="10">
+                <ImageButton Style="{DynamicResource BackImageButtonStyle}"
+                             HorizontalOptions="Start"
+                             VerticalOptions="Center"
+                             Clicked="OnBackButtonClicked"
+                             Background="Transparent">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="{x:Static helpers:IconFont.Cancel}"
+                                         FontFamily="IconFontTypes"
+                                         Color="{StaticResource ColorPrimary}"/>
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <Label Text="No Events Available"
+                       VerticalOptions="Center"
+                       FontSize="Medium"/>
+            </StackLayout>
+
+            <StackLayout BindableLayout.ItemsSource="{Binding Events}" Spacing="10" Margin="10, 0" IsVisible="{Binding IsEventsAvailable}">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
                             <!-- Left swipe actions -->
                             <SwipeView.LeftItems>
-                                <SwipeItems Mode="Execute">
+                                <SwipeItems>
                                     <SwipeItem Text="Favorite"
                                                BackgroundColor="{StaticResource ColorPrimary}"
                                                Command="{Binding Path=BindingContext.ToggleFavoriteCommand , Source={x:Reference ThisEventsPage}}"
@@ -101,12 +123,12 @@
                             <SwipeView.RightItems>
                                 <SwipeItems>
                                     <SwipeItem Text="Edit"
-                                               BackgroundColor="LightBlue"
+                                               BackgroundColor="{StaticResource ColorPrimary}"
                                                Command="{Binding Path=BindingContext.EditEventCommand, Source={x:Reference ThisEventsPage}}"
                                                CommandParameter="{Binding .}"
                                                IconImageSource="{StaticResource EditIcon}" />
                                     <SwipeItem Text="Delete"
-                                               BackgroundColor="Red"
+                                               BackgroundColor="{StaticResource ColorPrimary}"
                                                Command="{Binding Path=BindingContext.DeleteEventCommand, Source={x:Reference ThisEventsPage}}"
                                                CommandParameter="{Binding .}"
                                                IconImageSource="{StaticResource DeleteIcon}" />
@@ -129,14 +151,16 @@
                                     <StackLayout VerticalOptions="End" Padding="10">
                                         <!-- Name and Category with a light color for visibility -->
                                         <Label Text="{Binding Name}" 
-                                                    TextColor="White" 
-                                                    FontSize="Medium" 
-                                                    FontAttributes="Bold"/>
+                                               TextColor="White" 
+                                               FontSize="22" 
+                                               FontAttributes="Bold"
+                                               FontFamily="JosefinSansBold"/>
                                         <Label Text="{Binding Description}" 
-                                                    TextColor="White"
-                                                    FontSize="Small"
-                                                    LineBreakMode="CharacterWrap"
-                                                    HeightRequest="35"/>
+                                               TextColor="White"
+                                               FontSize="Small"
+                                               FontFamily="JosefinSansRegular"
+                                               LineBreakMode="CharacterWrap"
+                                               HeightRequest="35"/>
                                     </StackLayout>
                                 </Grid>
                             </Border>
@@ -148,5 +172,5 @@
         </VerticalStackLayout>
 
     </ScrollView>
-    
+
 </ContentPage>

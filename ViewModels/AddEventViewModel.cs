@@ -25,6 +25,15 @@ namespace EventyMaui.ViewModels
             set => SetProperty(ref newEvent, value);
         }
 
+        private bool _isLocationBusy;
+        public bool IsLocationBusy
+        {
+            get => _isLocationBusy;
+            set => SetProperty(ref _isLocationBusy, value);
+        }
+
+        public DateTime MinimumEventDate => DateTime.Today.AddDays(1);
+
         public ICommand SaveNewEventCommand { get; }
         public ICommand CaptureImageCommand { get; }
         public ICommand SelectImageCommand { get; }
@@ -46,11 +55,11 @@ namespace EventyMaui.ViewModels
 
         private async Task SaveNewEvent()
         {
-            // Implement logic to save NewEvent to your data store
-            OnPropertyChanged(nameof(NewEvent));
-            EventService.AddEvent(newEvent);
+
+            // If all checks pass, proceed with saving
+            EventService.AddEvent(NewEvent);
             await Application.Current.MainPage.DisplayAlert("Success", "New event created successfully.", "OK");
-            await Shell.Current.GoToAsync($"{nameof(EventDetailsPage)}?EventId={newEvent.EventId}");
+            await Shell.Current.GoToAsync($"{nameof(EventDetailsPage)}?EventId={NewEvent.EventId}");
         }
 
         private async Task RemoveImageFromEventGallery(string imageUrl)
@@ -195,6 +204,9 @@ namespace EventyMaui.ViewModels
         {
             try
             {
+                IsLocationBusy = true;
+
+
                 var status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
                 if (status == PermissionStatus.Granted)
                 {
@@ -208,6 +220,7 @@ namespace EventyMaui.ViewModels
                     {
                         string address = await GetAddressFromLatLonAsync(location.Latitude, location.Longitude);
                         newEvent.Location = address;
+                        Debug.WriteLine($"Error: {address}");
                     }
                 }
                 else
@@ -220,6 +233,9 @@ namespace EventyMaui.ViewModels
                 // Handle error
                 Debug.WriteLine($"Error: {ex.Message}");
 
+            } finally
+            {
+                IsLocationBusy = false;
             }
         }
 

@@ -24,6 +24,11 @@
                      Color="Red"
                      FontFamily="IconFontTypes" />
 
+
+
+            <helpers:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+
+
             <!-- Colors -->
             <Color x:Key="PageBackgroundColor">#191932</Color>
             <Color x:Key="FrameBackgroundColor">#F1EFF0</Color>

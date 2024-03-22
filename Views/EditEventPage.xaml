@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:helpers="clr-namespace:EventyMaui.Helpers"
              xmlns:vm="clr-namespace:EventyMaui.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="EventyMaui.Views.EditEventPage"
              x:Name="ThisPage"
              Shell.NavBarIsVisible="False"
@@ -41,7 +42,14 @@
                            HorizontalOptions="Start"
                            VerticalOptions="Start"/>
                     <Entry Text="{Binding EditableEvent.Name, Mode=TwoWay}"
-                           Placeholder="Event Name"/>
+                           Placeholder="Event Name">
+                        <Entry.Behaviors>
+                            <toolkit:TextValidationBehavior
+                                    x:Name="EventNameValidationBehavior"
+                                    Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                                    MinimumLength="3"/>     
+                        </Entry.Behaviors>
+                    </Entry>
                 </StackLayout>
 
                 <!-- Event Hero Image URL -->
@@ -52,7 +60,14 @@
                            HorizontalOptions="Start"
                            VerticalOptions="Start"/>
                     <Entry x:Name="EventHeroImageEntry" Text="{Binding EditableEvent.HeroImage, Mode=TwoWay}"
-                           Placeholder="Event Hero Image URL"/>
+                           Placeholder="Event Hero Image URL">
+                        <Entry.Behaviors>
+                            <toolkit:TextValidationBehavior
+                                x:Name="EventHeroImageValidationBehavior"
+                                Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                                MinimumLength="3"/>
+                        </Entry.Behaviors>
+                    </Entry>
 
                     <Image Source="{Binding EditableEvent.HeroImage}"
                            HeightRequest="200"
@@ -124,7 +139,14 @@
                            HorizontalOptions="Start"
                            VerticalOptions="Start"/>
                     <Entry Text="{Binding EditableEvent.Category, Mode=TwoWay}"
-                           Placeholder="Event Category"/>
+                           Placeholder="Event Category">
+                        <Entry.Behaviors>
+                            <toolkit:TextValidationBehavior
+                                x:Name="EventCategoryValidationBehavior"
+                                Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                                MinimumLength="3"/> 
+                        </Entry.Behaviors>
+                    </Entry>
                 </StackLayout>
 
                 <!-- Event Description -->
@@ -136,7 +158,14 @@
                            VerticalOptions="Start"/>
                     <Editor Text="{Binding EditableEvent.Description, Mode=TwoWay}"
                             Placeholder="Event Description"
-                            AutoSize="TextChanges"/>
+                            AutoSize="TextChanges">
+                        <Editor.Behaviors>
+                            <toolkit:TextValidationBehavior
+                                x:Name="EventDescriptionValidationBehavior"
+                                Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                                MinimumLength="3"/>
+                        </Editor.Behaviors>
+                    </Editor>
                 </StackLayout>
 
                 <!-- Event Date -->
@@ -146,7 +175,15 @@
                            FontSize="16"
                            HorizontalOptions="Start"
                            VerticalOptions="Start"/>
-                    <DatePicker Date="{Binding EditableEvent.Date, Mode=TwoWay}"/>
+                    <DatePicker Date="{Binding EditableEvent.Date, Mode=TwoWay}"
+                                MinimumDate="{Binding MinimumEventDate}">
+                        <DatePicker.Behaviors>
+                            <toolkit:TextValidationBehavior
+                                    x:Name="EventDateValidationBehavior"
+                                    Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                                    MinimumLength="3"/>
+                        </DatePicker.Behaviors>
+                    </DatePicker>
                 </StackLayout>
 
                 <!-- Event Location -->
@@ -157,7 +194,14 @@
                            HorizontalOptions="Start"
                            VerticalOptions="Start"/>
                     <Entry x:Name="EventLocationEntry" Text="{Binding EditableEvent.Location, Mode=TwoWay}"
-                            Placeholder="Event Location"/>
+                            Placeholder="Event Location">
+                        <Entry.Behaviors>
+                            <toolkit:TextValidationBehavior
+                                    x:Name="EventLocationValidationBehavior"
+                                    Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                                    MinimumLength="3"/>
+                        </Entry.Behaviors>
+                    </Entry>
                     <Label Text="Use Current Location"
                            Style="{StaticResource PageSubHeaderSubTitleStyle}" 
                            HorizontalOptions="End"
@@ -261,7 +305,7 @@
                         </Border>
                     </StackLayout>
                 </StackLayout>
-                
+
                 <!-- Save Button -->
                 <HorizontalStackLayout HorizontalOptions="End" Spacing="10" Margin="0,24">
                     <Button Text="Save"

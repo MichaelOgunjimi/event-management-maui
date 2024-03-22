@@ -11,6 +11,8 @@ namespace EventyMaui.ViewModels
     {
         public BaseViewModel() { }
 
+        
+
         // Example of how you might implement property change notification
         // if ObservableObject doesn't already provide it.
         // Uncomment if needed, and ensure ObservableObject is suitable or removed.
