@@ -7,10 +7,14 @@
     <Application.Resources>
         <ResourceDictionary>
 
-            <FontImageSource x:Key="FavoriteIcon"
-                     Glyph="{x:Static helpers:IconFont.Heart}"
+            <FontImageSource x:Key="FavoriteFalseIcon"
+                     Glyph="{x:Static helpers:IconFont.HeartOutline}"
                      Color="Yellow"
                      FontFamily="IconFontTypes" />
+            <FontImageSource x:Key="FavoriteTrueIcon"
+                    Glyph="{x:Static helpers:IconFont.HeartOutline}"
+                    Color="Yellow"
+                    FontFamily="IconFontTypes" />  
             <FontImageSource x:Key="EditIcon"
                      Glyph="{x:Static helpers:IconFont.CircleEditOutline}"
                      Color="LightBlue"

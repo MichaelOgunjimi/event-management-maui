@@ -90,16 +90,16 @@
                             <SwipeView.LeftItems>
                                 <SwipeItems Mode="Execute">
                                     <SwipeItem Text="Favorite"
-                                               BackgroundColor="Yellow"
-                                               Command="{Binding Path=BindingContext.FavoriteCommand, Source={x:Reference ThisEventsPage}}"
+                                               BackgroundColor="{StaticResource ColorPrimary}"
+                                               Command="{Binding Path=BindingContext.ToggleFavoriteCommand , Source={x:Reference ThisEventsPage}}"
                                                CommandParameter="{Binding .}"
-                                               IconImageSource="{StaticResource FavoriteIcon}" />
+                                               IconImageSource="{StaticResource FavoriteFalseIcon}" />
                                 </SwipeItems>
                             </SwipeView.LeftItems>
 
                             <!-- Right swipe actions -->
                             <SwipeView.RightItems>
-                                <SwipeItems Mode="Execute">
+                                <SwipeItems>
                                     <SwipeItem Text="Edit"
                                                BackgroundColor="LightBlue"
                                                Command="{Binding Path=BindingContext.EditEventCommand, Source={x:Reference ThisEventsPage}}"

@@ -27,7 +27,7 @@ namespace EventyMaui.ViewModels
             {
                 if (SetProperty(ref _currentFilter, value))
                 {
-                    RefreshEvents(_currentFilter);
+                    PerformSearch(_searchQuery);
                 }
             }
         }
@@ -45,21 +45,29 @@ namespace EventyMaui.ViewModels
             {
                 if (SetProperty(ref _searchQuery, value))
                 {
-                    PerformSearch(_searchQuery);
+                    PerformSearch(value);
                 }
             }
         }
 
         public ICommand SearchEventsCommand { get; private set; }
         public ICommand NavigateToEventDetailsCommand { get; private set; }
+        public ICommand ToggleFavoriteCommand { get; private set; }
+        public ICommand EditEventCommand { get; private set; }
+        public ICommand DeleteEventCommand { get; private set; }
 
         public EventsViewModel()
         {
             Events = new ObservableCollection<Event>(EventService.GetAllEvents());
             SearchEventsCommand = new Command<string>(PerformSearch);
-            NavigateToEventDetailsCommand = new Command<Event>(async (eventy) => await NavigateToEventDetails(eventy));
+            NavigateToEventDetailsCommand = new Command<Event>(async (eventObj) => await NavigateToEventDetails(eventObj));
+            ToggleFavoriteCommand = new Command<Event>(ToggleFavorite);
+            EditEventCommand = new Command<Event>(async (eventObj) => await EditEvent(eventObj));
+            DeleteEventCommand = new Command<Event>(DeleteEvent);
+
             RefreshEvents(_currentFilter); // Initial refresh based on default filter
         }
+
 
         private async Task NavigateToEventDetails(Event selectedEvent)
         {
@@ -67,6 +75,27 @@ namespace EventyMaui.ViewModels
             {
                 await Shell.Current.GoToAsync($"{nameof(EventDetailsPage)}?EventId={selectedEvent.EventId}");
             }
+        }
+
+        private void ToggleFavorite(Event eventObj)
+        {
+            EventService.ToggleFavorite(eventObj.EventId);
+            PerformSearch(_searchQuery); // Refresh to show updated favorite status
+        }
+
+        private async Task EditEvent(Event eventObj)
+        {
+            if (eventObj != null)
+            {
+                // Navigate to the EditEventPage, passing the EventId as a query parameter
+                await Shell.Current.GoToAsync($"{nameof(EditEventPage)}?EventId={eventObj.EventId}");
+            }
+        }
+
+        private void DeleteEvent(Event eventObj)
+        {
+            EventService.DeleteEvent(eventObj.EventId);
+            Events.Remove(eventObj); // UI update
         }
 
         private void RefreshEvents(string filter)

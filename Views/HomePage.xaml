@@ -201,16 +201,22 @@
             
             <!-- Add Event Button-->
             <HorizontalStackLayout Grid.Row="4"
-                                    HorizontalOptions="Center">
-                <Button Text="Add Event"
-                        Style="{StaticResource PrimaryButtonStyle}"
-                        HorizontalOptions="Center"
-                        Command="{Binding AddEventCommand}"/>
-                
+                                   HorizontalOptions="CenterAndExpand"
+                                   Margin="0, 50, 0, 0"
+                                   Spacing="40">
+               
                 <Button Text="Explore Events"
+                        WidthRequest="160"
                         Style="{StaticResource SecondaryButtonStyle}"
                         HorizontalOptions="Center"
                         Clicked="Button_Clicked"/>
+
+                <Button Text="Add Event"
+                        WidthRequest="160"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        HorizontalOptions="Center"
+                        Command="{Binding AddEventCommand}"/>
+
             </HorizontalStackLayout>
            
             <!-- Favorite Events -->
