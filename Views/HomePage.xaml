@@ -20,223 +20,284 @@
         <viewmodels:HomeViewModel/>
     </ContentPage.BindingContext>
 
+    <Grid>
+        <!-- Menu Grid -->
+        <Grid x:Name="MenuContainer"
+              IgnoreSafeArea="{OnPlatform Android=False, iOS=True}">
 
-    <ScrollView HorizontalScrollBarVisibility="Never"
-            VerticalScrollBarVisibility="Never">
-        <Grid Margin="0, 20, 0, 0"
-          RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
+          
 
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="GridArea_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <VerticalStackLayout
+                Margin="0,52,24,0"
+                HorizontalOptions="End"
+                Spacing="20">
+
+                <Label                
+                    Text="MENU"
+                    Style="{StaticResource PageHeaderStyle}"
+                    HorizontalOptions="End"/>
+
+
+                <Label                
+                    Text="All Events"
+                    Style="{StaticResource UpcomingTitleStyle}"
+                    HorizontalOptions="End" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+                <Label                
+                    Text="Add Event"
+                    Style="{StaticResource UpcomingTitleStyle}"
+                    HorizontalOptions="End">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding AddEventCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+
+                <Label                
+                    Text="Favorites Events"
+                    Style="{StaticResource UpcomingTitleStyle}"
+                    HorizontalOptions="End">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}" CommandParameter="Favorites"  />
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Main Content Grid -->
+
+        <Grid x:Name="MainContentGrid"
+              IgnoreSafeArea="{OnPlatform Android=False, iOS=True}"
+              RowDefinitions="Auto, *">
             <!-- Header -->
             <Grid Grid.Row="0"
-              ColumnDefinitions="*, Auto"
-              Background="Transparent"
-              Margin="20, 0">
+                  ColumnDefinitions="*, Auto"
+                  Background="Transparent"
+                  Margin="20, 0">
                 <ImageButton Grid.Column="0"
-                         Style="{DynamicResource HomeIconStyle}"
-                         VerticalOptions="CenterAndExpand">
+                     Style="{DynamicResource HomeIconStyle}"
+                     VerticalOptions="CenterAndExpand"
+                     Clicked="HeaderButton_Clicked">
                     <ImageButton.Source>
                         <FontImageSource Glyph="{x:Static helpers:IconFont.Menu}"
-                                     FontFamily="IconFontTypes"
-                                     Color="{StaticResource ColorAccent}"/>
+                         FontFamily="IconFontTypes"
+                         Color="{StaticResource ColorAccent}"/>
                     </ImageButton.Source>
                 </ImageButton>
+
 
                 <Border Grid.Column="1"
                     HeightRequest="60"
                     WidthRequest="60"
                     HorizontalOptions="End"
                     StrokeShape="RoundRectangle 80, 80, 80, 80">
+                   
                     <Image Aspect="AspectFill"
-                       Source="user_image.png"
-                       HeightRequest="100"
-                       WidthRequest="100" />
+                           Source="user_image.png"
+                           HeightRequest="100"
+                           WidthRequest="100" />    
                 </Border>
             </Grid>
+            
+            <!-- Body -->
+            <ScrollView HorizontalScrollBarVisibility="Never"
+                        VerticalScrollBarVisibility="Never"
+                        Grid.Row="1">
+                <Grid Margin="0, 20, 0, 0"
+                      RowDefinitions="Auto, Auto, Auto, Auto, Auto">
 
-            <!-- Content -->
-            <!-- Title -->
-            <VerticalStackLayout Grid.Row="1"
+                    <!-- Title -->
+                    <VerticalStackLayout Grid.Row="0"
                              VerticalOptions="Center"
                              Margin="20, 0, 20, 0"
                              HeightRequest="100">
-                
-                <Label Style="{StaticResource PageHeaderStyle}"
+
+                        <Label Style="{StaticResource PageHeaderStyle}"
                         Text="Let's Plan Your Events" />
-                <Label Style="{StaticResource PageHeaderSubtitleStyle}"
+                        <Label Style="{StaticResource PageHeaderSubtitleStyle}"
                        FontSize="16"
                        Text="Ready to plan and manage your events seamlessly?"
                        LineBreakMode="WordWrap"
                        HorizontalOptions="Center"/>
-            </VerticalStackLayout>
+                    </VerticalStackLayout>
 
-            <!-- Upcoming Events -->
-            <VerticalStackLayout Grid.Row="2"
+                    <!-- Upcoming Events -->
+                    <VerticalStackLayout Grid.Row="1"
                              Spacing="10"
                              Margin="20, 0, 20, 0"
                              HeightRequest="120">
-                <StackLayout Margin="0, 0, 0, 5" Orientation="Vertical">
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}" CommandParameter="Upcoming" />
-                    </StackLayout.GestureRecognizers>
-                    <Label Style="{StaticResource PageSubHeaderStyle}"
+                        <StackLayout Margin="0, 0, 0, 5" Orientation="Vertical">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}" CommandParameter="Upcoming" />
+                            </StackLayout.GestureRecognizers>
+                            <Label Style="{StaticResource PageSubHeaderStyle}"
                            Text="Upcoming Events →"/>
-                    <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
+                            <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
                            Text="Events that are coming up soon." />
-                </StackLayout>
+                        </StackLayout>
 
 
-                <CollectionView ItemsSource="{Binding UpcomingEvents}"
+                        <CollectionView ItemsSource="{Binding UpcomingEvents}"
                                 SelectionMode="Single"
                                 SelectionChanged="OnCollectionViewSelectionChanged"
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 HeightRequest="60">
-                    <CollectionView.EmptyView>
-                        <Label Text="No Upcoming events available." HorizontalOptions="Center" />
-                    </CollectionView.EmptyView>
-                    <!-- Height adjusted for content -->
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid ColumnDefinitions=".30*, .70*"
+                            <CollectionView.EmptyView>
+                                <Label Text="No Upcoming events available." HorizontalOptions="Center" />
+                            </CollectionView.EmptyView>
+                            <!-- Height adjusted for content -->
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions=".30*, .70*"
                                                         WidthRequest="180"
                                                         HeightRequest="60">
-                                <RoundRectangle Grid.ColumnSpan="2"
+                                        <RoundRectangle Grid.ColumnSpan="2"
                                                 CornerRadius="45"
-                                                Fill="{StaticResource ColorSecondary}"/>        
-                                <Border Grid.RowSpan="2"
+                                                Fill="{StaticResource ColorSecondary}"/>
+                                        <Border Grid.RowSpan="2"
                                         Margin="5, 0, 0, 0"
                                         HeightRequest="50"
                                         WidthRequest="50"
                                         HorizontalOptions="Start"
                                         StrokeShape="RoundRectangle 50, 50, 50, 50"
                                         StrokeThickness="0">
-                                    <Image HeightRequest="50"
+                                            <Image HeightRequest="50"
                                             WidthRequest="50"
                                             Aspect="AspectFill"
                                             Source="{Binding HeroImage}" />
-                                </Border>
-                                <VerticalStackLayout Grid.Column="1"
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1"
                                         VerticalOptions="Center">
-                                    <Label Margin="10, 0, 0, 0"
+                                            <Label Margin="10, 0, 0, 0"
                                             Style="{StaticResource UpcomingTitleStyle}"
                                             Text="{Binding Name}"
                                             HorizontalOptions="Start"/>
-                                    <Label Margin="10, 0, 0, 0"
+                                            <Label Margin="10, 0, 0, 0"
                                             Style="{StaticResource UpcomingSubTitleStyle}"
                                             Text="{Binding TimeDifference}"
-                                            HorizontalOptions="Start"/>  
-                                </VerticalStackLayout>
-                            </Grid>
-                            
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </VerticalStackLayout>
+                                            HorizontalOptions="Start"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
 
-            <!-- Explore Events-->
-            <VerticalStackLayout Grid.Row="3"
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+
+                    <!-- Featured Events-->
+                    <VerticalStackLayout Grid.Row="2"
                                  Margin="20, 20, 20, 0"
                                  Spacing="10"
                                  HeightRequest="350">
-                <!-- Ensuring space for CoverFlowView -->
-                <StackLayout Orientation="Vertical">
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}" CommandParameter="Featured" />
-                    </StackLayout.GestureRecognizers>
-                    <Label Style="{StaticResource PageSubHeaderStyle}"
+                        <!-- Ensuring space for CoverFlowView -->
+                        <StackLayout Orientation="Vertical">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}" CommandParameter="Featured" />
+                            </StackLayout.GestureRecognizers>
+                            <Label Style="{StaticResource PageSubHeaderStyle}"
                            Text="Featured Events →" />
-                    <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
+                            <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
                            Text="Events we think you will like." />
-                </StackLayout>
+                        </StackLayout>
 
-                <cards:CoverFlowView ItemsSource="{Binding FeaturedEvents}"
+                        <cards:CoverFlowView ItemsSource="{Binding FeaturedEvents}"
                                      HeightRequest="300"
                                      Margin="-15, 0, 0, 0"
                                      HorizontalOptions="FillAndExpand">
-                    <x:Arguments>
-                        <proc:CoverFlowProcessor OpacityFactor="0.25" ScaleFactor="0.75" />
-                    </x:Arguments>
-                    <cards:CoverFlowView.ItemTemplate>
-                        <DataTemplate>
-                            <Border StrokeShape="RoundRectangle 25, 25, 25, 25" 
+                            <x:Arguments>
+                                <proc:CoverFlowProcessor OpacityFactor="0.25" ScaleFactor="0.75" />
+                            </x:Arguments>
+                            <cards:CoverFlowView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border StrokeShape="RoundRectangle 25, 25, 25, 25" 
                                         StrokeThickness="0" 
                                         HeightRequest="300" WidthRequest="360">
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.NavigateToEventDetailsCommand, Source={x:Reference ThisHomePage}}"
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Path=BindingContext.NavigateToEventDetailsCommand, Source={x:Reference ThisHomePage}}"
                                                           CommandParameter="{Binding .}" />
-                                </Border.GestureRecognizers>
+                                        </Border.GestureRecognizers>
 
-                                <Grid RowDefinitions=".7*,.3*">
-                                    <Image Grid.RowSpan="2" 
+                                        <Grid RowDefinitions=".7*,.3*">
+                                            <Image Grid.RowSpan="2" 
                                         Aspect="AspectFill"
                                            Source="{Binding HeroImage}" 
                                            HeightRequest="300" WidthRequest="360"/>
 
-                                    <Grid Grid.Row="1">
-                                        <Rectangle Fill="Black"
+                                            <Grid Grid.Row="1">
+                                                <Rectangle Fill="Black"
                                                    Opacity="0.5"
                                                    StrokeThickness="0" />
-                                        <VerticalStackLayout Margin="10, 0 , 0, 0"
+                                                <VerticalStackLayout Margin="10, 0 , 0, 0"
                                                              VerticalOptions="Center">
-                                            <Label Style="{StaticResource PageSubHeaderStyle}"
+                                                    <Label Style="{StaticResource PageSubHeaderStyle}"
                                                    Text="{Binding Name}"
                                                    TextColor="#fff"/>
 
-                                            <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
+                                                    <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
                                                   Text="{Binding Description}" 
                                                    TextColor="#fff"/>
 
-                                        </VerticalStackLayout>
+                                                </VerticalStackLayout>
 
-                                    </Grid>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </cards:CoverFlowView.ItemTemplate>
-                </cards:CoverFlowView>
-            </VerticalStackLayout>
-            
-            <!-- Add Event Button-->
-            <HorizontalStackLayout Grid.Row="4"
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </cards:CoverFlowView.ItemTemplate>
+                        </cards:CoverFlowView>
+                    </VerticalStackLayout>
+
+                    <!-- Add Event Button-->
+                    <HorizontalStackLayout Grid.Row="3"
                                    HorizontalOptions="CenterAndExpand"
                                    Margin="0, 50, 0, 0"
                                    Spacing="40">
-               
-                <Button Text="Explore Events"
+
+                        <Button Text="Explore Events"
                         WidthRequest="160"
                         Style="{StaticResource SecondaryButtonStyle}"
                         HorizontalOptions="Center"
                         Clicked="Button_Clicked"/>
 
-                <Button Text="Add Event"
+                        <Button Text="Add Event"
                         WidthRequest="160"
                         Style="{StaticResource PrimaryButtonStyle}"
                         HorizontalOptions="Center"
                         Command="{Binding AddEventCommand}"/>
 
-            </HorizontalStackLayout>
-           
-            <!-- Favorite Events -->
-            <VerticalStackLayout Grid.Row="5"
+                    </HorizontalStackLayout>
+
+                    <!-- Favorite Events -->
+                    <VerticalStackLayout Grid.Row="4"
                                  Margin="0, 0, 20, 0"
                                  Spacing="10">
 
-                <StackLayout Margin="20, 0, 0, 0" Orientation="Vertical">
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}" CommandParameter="Favorites" />
-                    </StackLayout.GestureRecognizers>
-                    <Label Style="{StaticResource PageSubHeaderStyle}"
+                        <StackLayout Margin="20, 0, 0, 0" Orientation="Vertical">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NavigateCommandToEvents}" CommandParameter="Favorites" />
+                            </StackLayout.GestureRecognizers>
+                            <Label Style="{StaticResource PageSubHeaderStyle}"
                            Text="Favorite Events →"
                            Margin="0, 10, 0, 0" />
-                    <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
+                            <Label Style="{StaticResource PageSubHeaderSubTitleStyle}"
                            Text="Events that are in your favorites." />
-                </StackLayout>
+                        </StackLayout>
 
 
-                <ListView ItemsSource="{Binding FavoriteEvents}"
+                        <ListView ItemsSource="{Binding FavoriteEvents}"
                           x:Name="FavoriteEventsListView"
                           HasUnevenRows="True"
                           SeparatorVisibility="None"
@@ -245,55 +306,56 @@
                           HorizontalScrollBarVisibility="Never"
                           VerticalScrollBarVisibility="Never"
                           Margin="10, 0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Border StrokeShape="RoundRectangle 10, 10, 10, 10"
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Border StrokeShape="RoundRectangle 10, 10, 10, 10"
                                         StrokeThickness="0"
                                         Padding="0, 5"
                                         BackgroundColor="Transparent">
-                                    
-                                    <Grid ColumnDefinitions="100, *"
+
+                                            <Grid ColumnDefinitions="100, *"
                                         Margin="0">
-                                        <!-- Remove margin if you want content flush with Frame edges -->
-                                        <Border Grid.Column="0"
+                                                <!-- Remove margin if you want content flush with Frame edges -->
+                                                <Border Grid.Column="0"
                                                 HeightRequest="100"
                                                 WidthRequest="100"
                                                 StrokeShape="RoundRectangle 15"
                                                 StrokeThickness="0"
                                                 VerticalOptions="Center"
-                                                HorizontalOptions="Center"> 
-                                            <Image Source="{Binding HeroImage}"
+                                                HorizontalOptions="Center">
+                                                    <Image Source="{Binding HeroImage}"
                                                    Aspect="AspectFill"
                                                    HeightRequest="100"
                                                    WidthRequest="100"/>
-                                        </Border>
+                                                </Border>
 
-                                        <VerticalStackLayout Grid.Column="1"
+                                                <VerticalStackLayout Grid.Column="1"
                                                              VerticalOptions="Center"
                                                              Spacing="5"
                                                              Padding="10, 0, 0, 0">
-                                            <Label Text="{Binding Name}"
+                                                    <Label Text="{Binding Name}"
                                                     FontSize="18"
                                                     FontAttributes="Bold"
                                                     VerticalOptions="Center"
-                                                    Style="{StaticResource UpcomingTitleStyle}"/>      
+                                                    Style="{StaticResource UpcomingTitleStyle}"/>
 
-                                            <Label Text="{Binding Location}"
+                                                    <Label Text="{Binding Location}"
                                                    Style="{StaticResource UpcomingSubTitleStyle}"
                                                    FontSize="14"
                                                    VerticalOptions="Center" />
-                                        </VerticalStackLayout>
-                                    </Grid>
-                                </Border>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                                </VerticalStackLayout>
+                                            </Grid>
+                                        </Border>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
 
-            </VerticalStackLayout>
+                    </VerticalStackLayout>
 
+                </Grid>
+            </ScrollView>
         </Grid>
-    </ScrollView>
-
+    </Grid>
 </ContentPage>

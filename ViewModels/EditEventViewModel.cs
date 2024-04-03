@@ -25,6 +25,13 @@ namespace EventyMaui.ViewModels
             set => SetProperty(ref editableEvent, value);
         }
 
+        private bool _isLocationBusy;
+        public bool IsLocationBusy
+        {
+            get => _isLocationBusy;
+            set => SetProperty(ref _isLocationBusy, value);
+        }
+
         public DateTime MinimumEventDate => DateTime.Today.AddDays(1);
         public ICommand SaveEventCommand { get; }
         public ICommand DeleteEventCommand { get; }
@@ -220,6 +227,7 @@ namespace EventyMaui.ViewModels
         {
             try
             {
+                IsLocationBusy = true;
                 var status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
                 if (status == PermissionStatus.Granted)
                 {
@@ -244,6 +252,10 @@ namespace EventyMaui.ViewModels
             {
                 // Handle error
                 Debug.WriteLine($"Error: {ex.Message}");
+            }
+            finally
+            {
+                IsLocationBusy = false;
             }
         }
 

@@ -181,37 +181,49 @@
                 </StackLayout>
 
                 <!-- Event Location -->
-                <StackLayout>
-                    <ActivityIndicator IsVisible="{Binding IsLocationBusy}"
-                               IsRunning="{Binding IsLocationBusy}"
-                               Color="DarkBlue"
-                               HorizontalOptions="Center"
-                               VerticalOptions="CenterAndExpand" />
-                    <Label Text="Event Location"
-                           Style="{StaticResource UpcomingSubTitleStyle}"
-                           FontSize="16"
-                           HorizontalOptions="Start"
-                           VerticalOptions="Start"/>
-                    <Entry x:Name="EventLocationEntry" Text="{Binding NewEvent.Location, Mode=TwoWay}"
-                           Placeholder="Event Location">
-                        <Entry.Behaviors>
-                            <toolkit:TextValidationBehavior
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Content StackLayout -->
+                    <StackLayout Grid.Row="0">
+                        <Label Text="Event Location"
+                               Style="{StaticResource UpcomingSubTitleStyle}"
+                               FontSize="16"
+                               HorizontalOptions="Start"
+                               VerticalOptions="Start"/>
+                        <Entry x:Name="EventLocationEntry" Text="{Binding NewEvent.Location, Mode=TwoWay}"
+                               Placeholder="Event Location">
+                            <Entry.Behaviors>
+                                <toolkit:TextValidationBehavior
                                     x:Name="EventLocationValidationBehavior"
                                     Flags="ValidateOnAttaching, ValidateOnValueChanged"
                                     MinimumLength="3"/>
-                        </Entry.Behaviors>
-                    </Entry>
-                    <Label Text="Use Current Location"
-                           Style="{StaticResource PageSubHeaderSubTitleStyle}" 
-                           HorizontalOptions="End"
-                           VerticalOptions="Start"
-                           TextDecorations="Underline"
-                           Margin="0,0,0,0">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding UseCurrentLocationCommand}"/>
-                        </Label.GestureRecognizers>
-                    </Label>
-                </StackLayout>
+                            </Entry.Behaviors>
+                        </Entry>
+                        <Label Text="Use Current Location"
+                               Style="{StaticResource PageSubHeaderSubTitleStyle}" 
+                               HorizontalOptions="End"
+                               VerticalOptions="Start"
+                               TextDecorations="Underline"
+                               Margin="0,0,0,0">    
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding UseCurrentLocationCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <!-- ActivityIndicator Overlay -->
+                    <ActivityIndicator Grid.Row="0"
+                       IsVisible="{Binding IsLocationBusy}"
+                       IsRunning="{Binding IsLocationBusy}"
+                       Color="{StaticResource ColorPrimaryDarkShade}"
+                       BackgroundColor="Black" Opacity="0.2"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand"/>
+                </Grid>
+
 
                 <!-- Event Gallery -->
                 <StackLayout>
