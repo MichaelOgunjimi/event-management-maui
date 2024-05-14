@@ -48,11 +48,11 @@ To run this application, you will need the following dependencies:
 
 1. **Open the solution in Visual Studio:**
    ```bash
-   start EventManagement.sln
+   start EventyMaui.sln
    ```
 
 2. **Set the startup project:**
-   - Right-click on the `EventManagement` project and select `Set as Startup Project`.
+   - Right-click on the `EventyMaui` project and select `Set as Startup Project`.
 
 3. **Run the app:**
    - Press `F5` or click on the `Start` button to run the app.
@@ -61,11 +61,11 @@ To run this application, you will need the following dependencies:
 
 1. **Open the solution in Visual Studio for Mac:**
    ```bash
-   open EventManagement.sln
+   open EventyMaui.sln
    ```
 
 2. **Set the startup project:**
-   - Right-click on the `EventManagement` project and select `Set as Startup Project`.
+   - Right-click on the `EventyMaui` project and select `Set as Startup Project`.
 
 3. **Run the app:**
    - Press `⌘ + ↵` or click on the `Run` button to run the app.
@@ -81,9 +81,7 @@ To run this application, you will need the following dependencies:
    - From the `Event List` screen, click on an event to view its details.
    - Edit or delete the event as needed.
 
-3. **Track attendees:**
-   - In the `Event Details` screen, navigate to the `Attendees` tab.
-   - Add, edit, or remove attendee details.
+ remove attendee details.
 
 ## Contributing
 
