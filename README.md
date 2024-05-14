@@ -15,7 +15,7 @@ Welcome to the Event Management .NET MAUI App! This application is designed to s
 
 Below is a landscape image showcasing three main screens of the app: Start Page, Home Page, Event List and Event Details.
 
-![Event Management App](image_url)
+![Event Management App](Resources/Images/readmeImage.png)
 
 ## Prerequisites
 
